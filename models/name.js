@@ -9,6 +9,6 @@ let productSchema = mongoose.Schema({
         required: true
     }
 }, {
-    collection: 'product'
+    collection: 'products'
 });
 let O = module.exports = mongoose.model('a', productSchema);
