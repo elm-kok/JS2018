@@ -1,0 +1,17 @@
+{
+  "name": "nodejs_mongo",
+  "version": "1.0.0",
+  "description": "simple express",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app"
+  },
+  "author": "kok",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongoose": "^4.13.7",
+    "path": "^0.12.7",
+    "pug": "^2.0.0-rc.4"
+  }
+}
