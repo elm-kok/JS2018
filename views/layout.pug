@@ -21,6 +21,7 @@ html
             li.nav-item
               a(href='/product/add') Add Product
     .container
+      != messages('message',locals)
       block content
       block foot
       br
