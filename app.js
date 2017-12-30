@@ -4,7 +4,11 @@ const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
 mongoose.connect('mongodb://localhost/myapp');
 let db = mongoose.connection;
 db.once('open', () => {
