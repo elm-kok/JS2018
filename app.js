@@ -35,6 +35,13 @@ app.get('/product/add', (req, res) => {
         title: 'Add Product'
     });
 });
+app.get('/product/:id', (req, res) => {
+    Product.findById(req.params.id, (err, product) => {
+        res.render('product', {
+            product: product
+        });
+    });
+});
 app.post('/product/add', (req, res) => {
     let product = new Product();
     //console.log(req.body.name);

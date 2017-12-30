@@ -3,7 +3,8 @@ block content
     h1 #{title} 
     ul.list-group  
         each pro ,i in result
-            li.list-group-item=pro.name+' ฿'+pro.prices
+            li.list-group-item
+                a(href='/product/'+pro._id)=pro.name
     
                 
             
