@@ -2,6 +2,7 @@ doctype html
 html
   head
     link(rel='stylesheet' href='/bower_components/bootstrap/dist/css/bootstrap.css')
+    link(rel='stylesheet' href='/css/style.css')
     title KOK
   body
     nav.navbar.navbar-inverse.navbar-expand-lg.navbar-light.bg-light
@@ -19,8 +20,6 @@ html
               a(href='/') Home
             li.nav-item
               a(href='/product/add') Add Product
-            li.nav-item
-              a(href='#') Delete Product
     .container
       block content
       block foot
@@ -30,3 +29,4 @@ html
         p KOK Copyright &copy 2018
     script(src='/bower_components/jquery/dist/jquery.js')
     script(src='/bower_components/bootstrap/dist/js/bootstrap.js')
+    script(src='/js/main.js')

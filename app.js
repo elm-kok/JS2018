@@ -42,6 +42,14 @@ app.get('/product/:id', (req, res) => {
         });
     });
 });
+app.get('/product/edit/:id', (req, res) => {
+    Product.findById(req.params.id, (err, product) => {
+        res.render('edit_product', {
+            title: 'Edit Product',
+            product: product
+        });
+    });
+});
 app.post('/product/add', (req, res) => {
     let product = new Product();
     //console.log(req.body.name);
@@ -53,6 +61,30 @@ app.post('/product/add', (req, res) => {
             return;
         }
         res.redirect('/');
+    });
+});
+app.post('/product/edit/:id', (req, res) => {
+    let product = {};
+    product.name = req.body.name;
+    product.prices = req.body.prices;
+    let query = {
+        _id: req.params.id
+    };
+    Product.update(query, product, (err) => {
+        if (err) {
+            throw err;
+            return;
+        }
+        res.redirect('/');
+    });
+});
+app.delete('/product/:id', (req, res) => {
+    let query = {
+        _id: req.params.id
+    };
+    Product.remove(query, (err) => {
+        if (err) console.log(err);
+        res.send('Success');
     });
 });
 app.listen('3000', () => {
