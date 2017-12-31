@@ -63,65 +63,8 @@ app.get('/', (req, res) => {
         //console.log(result.toString());
     });
 });
-app.get('/product/add', (req, res) => {
-    res.render('add_product', {
-        title: 'Add Product'
-    });
-});
-app.get('/product/:id', (req, res) => {
-    Product.findById(req.params.id, (err, product) => {
-        res.render('product', {
-            product: product
-        });
-    });
-});
-app.get('/product/edit/:id', (req, res) => {
-    Product.findById(req.params.id, (err, product) => {
-        res.render('edit_product', {
-            title: 'Edit Product',
-            product: product
-        });
-    });
-});
-app.post('/product/add', (req, res) => {
-    let product = new Product();
-    //console.log(req.body.name);
-    product.name = req.body.name;
-    product.prices = req.body.prices;
-    product.save((err) => {
-        if (err) {
-            throw err;
-            return;
-        }
-        req.flash('success', 'Product Added');
-        res.redirect('/');
-    });
-});
-app.post('/product/edit/:id', (req, res) => {
-    let product = {};
-    product.name = req.body.name;
-    product.prices = req.body.prices;
-    let query = {
-        _id: req.params.id
-    };
-    Product.update(query, product, (err) => {
-        if (err) {
-            throw err;
-            return;
-        }
-        req.flash('success','Product updated');
-        res.redirect('/');
-    });
-});
-app.delete('/product/:id', (req, res) => {
-    let query = {
-        _id: req.params.id
-    };
-    Product.remove(query, (err) => {
-        if (err) console.log(err);
-        res.send('Success');
-    });
-});
+let products = require('./routes/products');
+app.use('/products', products);
 app.listen('3000', () => {
     console.log('port 3000');
 });

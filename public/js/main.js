@@ -4,7 +4,7 @@ $(document).ready(() => {
         const id = $target.attr('data-id');
         $.ajax({
             type: 'DELETE',
-            url: '/product/' + id,
+            url: '/products/' + id,
             success: (response) => {
                 alert('Deleting product');
                 window.location.href = '/';

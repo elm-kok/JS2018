@@ -1,7 +1,7 @@
 extends layout
 block content
     h1 #{title}
-    form(method='POST' action="/product/edit/"+product._id)
+    form(method='POST' action="/products/edit/"+product._id)
         #form-group
             label Name: 
             input.form-control(name='name' type="text" value=product.name)

@@ -19,9 +19,12 @@ html
             li.nav-item
               a(href='/') Home
             li.nav-item
-              a(href='/product/add') Add Product
+              a(href='/products/add') Add Product
     .container
       != messages('message',locals)
+      if errors
+        each error, i in errors
+          div(class="alert alert-danger") #{error.msg}
       block content
       block foot
       br
