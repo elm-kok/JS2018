@@ -1,20 +1,28 @@
 const express = require('express');
 const router = express.Router();
 let Product = require('../models/product');
-router.get('/add', (req, res) => {
+let User = require('../models/user');
+router.get('/add', ensureAuthenticated, (req, res) => {
     res.render('add_product', {
         title: 'Add Product'
     });
 });
 router.get('/:id', (req, res) => {
     Product.findById(req.params.id, (err, product) => {
-        res.render('product', {
-            product: product
+        User.findById(product.author, (err, user) => {
+            res.render('product', {
+                product: product,
+                author: user.name
+            });
         });
     });
 });
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id', ensureAuthenticated, (req, res) => {
     Product.findById(req.params.id, (err, product) => {
+        if (product.author != req.user.id) {
+            req.flash('danger', 'Not Authorized');
+            res.redirect('/');
+        }
         res.render('edit_product', {
             title: 'Edit Product',
             product: product
@@ -33,6 +41,7 @@ router.post('/add', (req, res) => {
     } else {
         let product = new Product();
         product.name = req.body.name;
+        product.author = req.user._id;
         product.prices = req.body.prices;
         product.save((err) => {
             if (err) {
@@ -49,7 +58,10 @@ router.post('/edit/:id', (req, res) => {
     req.checkBody('prices', 'Prices is required').notEmpty();
     let errors = req.validationErrors();
     if (errors) {
-       let product = {};
+        let product = {};
+        product.name = req.body.name;
+        product.author = req.user._id;
+        product.prices = req.body.prices;
         product._id = req.params.id;
         res.render('edit_product', {
             title: 'Edit Product',
@@ -59,6 +71,7 @@ router.post('/edit/:id', (req, res) => {
     } else {
         let product = {};
         product.name = req.body.name;
+        product.author = req.user._id;
         product.prices = req.body.prices;
         let query = {
             _id: req.params.id
@@ -74,12 +87,30 @@ router.post('/edit/:id', (req, res) => {
     }
 });
 router.delete('/:id', (req, res) => {
+    if (!req.user._id) {
+        res.status(500).send();
+    }
     let query = {
         _id: req.params.id
     };
-    Product.remove(query, (err) => {
-        if (err) console.log(err);
-        res.send('Success');
+    Product.findById(req.params.id, (err, product) => {
+        if (product.author != req.user.id) {
+            res.status(500).send();
+        } else {
+            Product.remove(query, (err) => {
+                if (err) console.log(err);
+                res.send('Success');
+            });
+        }
     });
 });
+
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        req.flash('danger', 'Please login');
+        res.redirect('/users/login');
+    }
+}
 module.exports = router;

@@ -18,8 +18,9 @@ html
           ul.nav.navbar-nav.mr-auto
             li.nav-item
               a(href='/') Home
-            li.nav-item
-              a(href='/products/add') Add Product
+            if user
+              li.nav-item
+                a(href='/products/add') Add Product
           ul.nav.navbar-nav.navbar-right
             if user
               li

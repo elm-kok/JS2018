@@ -7,6 +7,10 @@ let productSchema = mongoose.Schema({
     prices: {
         type: String,
         required: true
+    },
+    author: {
+        type: String,
+        required: true
     }
 }, {
     collection: 'product'

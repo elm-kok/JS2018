@@ -1,8 +1,11 @@
 extends layout
 block content
     h1=product.name
-    h3='$ '+product.prices
-    hr
-    a.btn.btn-default(href='/products/edit/'+product._id) Edit
-    |  
-    a.btn.btn-danger.delete-product(href='#',data-id=product._id) Delete
+    h2='$ '+product.prices
+    h3 Written by #{author}
+    if user
+        if user.id==product.author
+            hr
+            a.btn.btn-default(href='/products/edit/'+product._id) Edit
+            |  
+            a.btn.btn-danger.delete-product(href='#',data-id=product._id) Delete
