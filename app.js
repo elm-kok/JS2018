@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
+const config = require('./config/database');
+const passport = require('passport');
 
 app.use(bodyParser.urlencoded({
     extended: false
@@ -42,12 +44,21 @@ app.use(expressValidator({
     }
 }));
 
-mongoose.connect('mongodb://localhost/myapp');
+require('./config/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('*', (req, res, next) => {
+    res.locals.user = req.user || null;
+    next();
+});
+
+mongoose.connect(config.database);
 let db = mongoose.connection;
 db.once('open', () => {
     console.log('Connected to MongoDB');
 });
-db.once('error', () => {
+db.once('error', (err) => {
     console.log(err);
 });
 let Product = require('./models/product');
