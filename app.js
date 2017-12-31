@@ -60,11 +60,12 @@ app.get('/', (req, res) => {
             title: 'My Product',
             result: result
         });
-        //console.log(result.toString());
     });
 });
 let products = require('./routes/products');
+let users = require('./routes/users');
 app.use('/products', products);
+app.use('/users', users);
 app.listen('3000', () => {
     console.log('port 3000');
 });
